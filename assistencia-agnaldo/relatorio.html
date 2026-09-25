@@ -594,6 +594,8 @@ html.validando .vfaixa { display: flex; }
     ac.appendChild(botao('Enviar ressalva', true, '', function () {
       if (!t.value.trim()) { aviso('Escreva a ressalva antes de enviar.'); t.focus(); return; }
       abertos[it.codigo + ':txt'] = '';
+      // Mesma ressalva, mesmo texto: só fecha — não repete a linha no histórico.
+      if (atual && atual.status === 'ressalva' && atual.comentario === t.value.trim()) { abertos[it.codigo] = false; desenhar(); return; }
       validar(it, 'ressalva', t.value.trim(), opcao);
     }));
     f.appendChild(lab); f.appendChild(t); f.appendChild(ac);
