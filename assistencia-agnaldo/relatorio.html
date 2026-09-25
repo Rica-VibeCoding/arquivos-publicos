@@ -481,6 +481,15 @@ html.validando .vfaixa { display: flex; }
   var NOMES = { cliente: 'Cliente', fabrica: 'Movelmar' };
   var m = location.hash.match(/[#&]k=([^&]+)/);
   var k = m ? decodeURIComponent(m[1]) : sessionStorage.getItem('assist-k');
+  // Os links só diferem no #k=: colar outro link na mesma aba não recarrega a página,
+  // então troca de chave força recarregar — senão fica valendo o papel do link anterior.
+  window.addEventListener('hashchange', function () {
+    var n = location.hash.match(/[#&]k=([^&]+)/);
+    if (n && decodeURIComponent(n[1]) !== k) {
+      sessionStorage.setItem('assist-k', decodeURIComponent(n[1]));
+      location.reload();
+    }
+  });
   if (!k) return;
   if (m) sessionStorage.setItem('assist-k', k);
   if (!window.fetch) return;
